@@ -134,4 +134,4 @@ async def evaluar_respuestas(session_id: str = Form(...), respuestas: str = Form
 
 
 # Ejecutar la aplicación
-uvicorn.run(app)
+# uvicorn.run(app)

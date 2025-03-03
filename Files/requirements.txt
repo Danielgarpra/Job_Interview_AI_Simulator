@@ -3,3 +3,6 @@ uvicorn == 0.34.0
 pymysql == 1.1.1
 cohere == 5.13.12
 uuid == 1.30
+dotenv
+jinja2
+python-multipart
