@@ -1,0 +1,18 @@
+# Utilizar una imagen de Phthon oficial
+FROM python:3.11-slim
+
+# Establecer el directorio del contenedor
+WORKDIR /app
+
+# Copiamos todos los archivos al directorio del contenedor
+COPY . /app
+
+# Instalar las dependencias
+RUN pip install -r requirements.txt
+
+# Exponer el puerto en el que la aplicación va a correr en el contenedor
+EXPOSE 8000
+
+# Comando para ejecutar la aplicación
+# CMD ["python", "app_model.py"]
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]

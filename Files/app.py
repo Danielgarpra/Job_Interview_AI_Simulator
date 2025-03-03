@@ -28,7 +28,7 @@ co = cohere.ClientV2(cohere_api_key)
 # Ruta principal (frontend)
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse(request, "index.html")
 
 
 # **Ruta para generar preguntas de entrevista**
