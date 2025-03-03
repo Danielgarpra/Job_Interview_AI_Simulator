@@ -11,7 +11,7 @@ import json
 
 app = FastAPI()
 
-# Cargar variables de entorno
+# Load environment variables
 load_dotenv()
 username = os.getenv("DB_USER")
 password = os.getenv("DB_PASS")
@@ -19,25 +19,25 @@ host = os.getenv("DB_HOST")
 port = os.getenv("DB_PORT")
 cohere_api_key = os.getenv('API_KEY')
 
-# Configuración de Jinja2 para plantillas HTML
+# Configuration for Jinja2 templates (HTML)
 templates = Jinja2Templates(directory="templates")
 
-# Conectar a la API de Cohere
+# Connect to Cohere API
 co = cohere.ClientV2(cohere_api_key)
 
-# Ruta principal (frontend)
+# Main route
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
     return templates.TemplateResponse(request, "index.html")
 
 
-# **Ruta para generar preguntas de entrevista**
+# Route to generate questions
 @app.post("/generar_preguntas/")
 async def generar_preguntas(tema: str = Form(...)):
-    session_id = str(uuid.uuid4())  # Genera un ID único para la sesión
+    session_id = str(uuid.uuid4())  # Generate a unique session ID
 
     try:
-        # Llamar a la API para generar preguntas
+        # Call the API to generate questions
         response = co.chat(
             model="command-r-plus",
             messages=[{"role": "user", "content": f"Genera 3 preguntas de entrevista de trabajo sobre {tema}. Pon solo las preguntas sin nada más explicativo."}]
@@ -47,7 +47,7 @@ async def generar_preguntas(tema: str = Form(...)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error generando preguntas: {str(e)}")
 
-    # Guardar en la base de datos
+    # Save in the database
     try:
         db = pymysql.connect(host=host, user=username, password=password, cursorclass=pymysql.cursors.DictCursor)
         cursor = db.cursor()
@@ -61,6 +61,7 @@ async def generar_preguntas(tema: str = Form(...)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error en la base de datos: {str(e)}")
 
+    # Close the database connection
     finally:
         if 'cursor' in locals() and cursor:
             cursor.close()
@@ -70,13 +71,12 @@ async def generar_preguntas(tema: str = Form(...)):
     return JSONResponse(content={"session_id": session_id, "preguntas": preguntas})
 
 
-# **Ruta para evaluar respuestas**
+# Route to evaluate answers
 @app.post("/evaluar_respuestas/")
 async def evaluar_respuestas(session_id: str = Form(...), respuestas: str = Form(...)):
-    print(f"Recibido session_id: {session_id}")
-    print(f"Respuestas recibidas: {respuestas}")
+
     try:
-        # Recuperar preguntas de la sesión desde la base de datos
+        # Restore the questions from the database
         db = pymysql.connect(host=host, user=username, password=password, cursorclass=pymysql.cursors.DictCursor)
         cursor = db.cursor()
         
@@ -94,12 +94,12 @@ async def evaluar_respuestas(session_id: str = Form(...), respuestas: str = Form
         raise HTTPException(status_code=500, detail=f"Error recuperando datos: {str(e)}")
 
 
-    # Evaluar respuestas con Cohere
+    # Evaluate the answers with Cohere
 
     try:
         question= f"Un entrevistador ha realizado la siguiente pregunta: {result}. Ante esa pregunta yo he respondido esto:{respuestas}. Evaluame cómo lo he hecho, diciéndome los errores de manera breve. Gracias"
-        print(question)
-        # Llamar a la API para evaluar respuestas
+        
+        # Call the API to evaluate the answers
         response = co.chat(
             model="command-r-plus",
             messages=[{"role": "user", "content": question}]
@@ -109,7 +109,7 @@ async def evaluar_respuestas(session_id: str = Form(...), respuestas: str = Form
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error evaluando respuestas: {str(e)}")
 
-    # Guardar en la base de datos
+    # Save the evaluation in the database
     try:
         db = pymysql.connect(host=host, user=username, password=password, cursorclass=pymysql.cursors.DictCursor)
         cursor = db.cursor()
@@ -123,7 +123,7 @@ async def evaluar_respuestas(session_id: str = Form(...), respuestas: str = Form
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error en la base de datos: {str(e)}")
 
-
+    # Close the database connection
     finally:
         if 'cursor' in locals() and cursor:
             cursor.close()
@@ -133,5 +133,6 @@ async def evaluar_respuestas(session_id: str = Form(...), respuestas: str = Form
     return JSONResponse(content={"evaluaciones": evaluaciones})
 
 
-# Ejecutar la aplicación
+# To execute the app if we run it in local
 # uvicorn.run(app)
+# After decomment e should run the app with the following command: python app.py
