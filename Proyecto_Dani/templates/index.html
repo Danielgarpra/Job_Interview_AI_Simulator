@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intervy - Entrevista con IA</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        header {
+            text-align: center;
+            color: white;
+            padding: 40px 20px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg'); /* Imagen de fondo */
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.6); /* Aplica un efecto de opacidad */
+            z-index: -1;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 80px;
+            font-weight: bold;
+            position: relative;
+        }
+        header h2 {
+            margin: 5px 0 0;
+            font-size: 18px;
+            font-weight: normal;
+            position: relative;
+        }
+        .container {
+            max-width: 600px;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin: 20px;
+        }
+        h1 {
+            color: #5D9B9B;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 20px;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+            transition: border-color 0.3s;
+        }
+        textarea:focus {
+            border-color: #5D9B9B;
+            outline: none;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #5D9B9B;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #4a7c7c;
+        }
+        .box {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            text-align: left;
+            font-size: 14px;
+            color: #333;
+        }
+        .box pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Intervy</h1>
+        <h2>De la práctica al éxito. Tu entrevista perfecta a un solo click</h2>
+    </header>
+    
+    <div class="container">
+        <h1>Selecciona un campo para la entrevista</h1>
+        <form id="formTema">
+            <textarea id="tema" name="tema" placeholder="Ejemplo: Inteligencia Artificial"></textarea>
+            <button type="submit">Generar Preguntas</button>
+        </form>
+        <div id="preguntas" class="box"></div>
+
+        <h1>Responde las preguntas</h1>
+        <form id="formRespuestas" style="display:none;">
+            <textarea id="respuestas" name="respuestas" placeholder="Introduce las respuestas en formato JSON"></textarea>
+            <button type="submit">Evaluar Respuestas</button>
+        </form>
+        <div id="evaluacion" class="box"></div>
+    </div>
+
+    <script>
+        let session_id = "";
+    
+        document.getElementById('formTema').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const tema = document.getElementById('tema').value;
+            const preguntasDiv = document.getElementById('preguntas');
+    
+            const response = await fetch('/generar_preguntas/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `tema=${encodeURIComponent(tema)}`
+            });
+    
+            if (!response.ok) {
+                alert("Error generando preguntas");
+                return;
+            }
+    
+            const data = await response.json();
+            session_id = data.session_id;
+            preguntasDiv.innerText = data.preguntas;
+            document.getElementById('formRespuestas').style.display = 'block';
+        });
+    
+        document.getElementById('formRespuestas').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const respuestas = document.getElementById('respuestas').value;
+    
+            const response = await fetch('/evaluar_respuestas/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `session_id=${session_id}&respuestas=${encodeURIComponent(respuestas)}`
+            });
+    
+            if (!response.ok) {
+                alert("Error evaluando respuestas");
+                return;
+            }
+    
+            const data = await response.json();
+            document.getElementById('evaluacion').innerText = data.evaluaciones;
+        });
+    </script>
+</body>
+</html>
