@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request, Form, HTTPException
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse, Response
 from fastapi.templating import Jinja2Templates
 import uvicorn
 import os
@@ -24,6 +24,11 @@ templates = Jinja2Templates(directory="templates")
 
 # Connect to Cohere API
 co = cohere.ClientV2(cohere_api_key)
+
+# Disable favicon route
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    return Response(content="", media_type="image/x-icon")
 
 # Main route
 @app.get("/", response_class=HTMLResponse)
