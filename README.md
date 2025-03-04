@@ -21,7 +21,7 @@ This project has a Docker image available in the following Docker Hub repository
 
 ## Installation and Setup
 1. Clone this repository:
-   git clone https://github.com/your-username/intervy.git
+   git clone https://github.com/your-username/intervy.git  
    cd intervy
 
 2. Create a virtual environment :
