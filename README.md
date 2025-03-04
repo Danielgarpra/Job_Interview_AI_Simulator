@@ -21,8 +21,7 @@ This project has a Docker image available in the following Docker Hub repository
 
 ## Installation and Setup
 1. Clone this repository:
-   git clone https://github.com/Danielgarpra/intervy.git  
-   cd intervy
+   git clone [https://github.com/Danielgarpra/intervy.git ](https://github.com/Danielgarpra/Generative-AI.git)
 
 2. Create a virtual environment :
     python -m venv env
