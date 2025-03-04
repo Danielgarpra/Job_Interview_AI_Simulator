@@ -134,5 +134,5 @@ async def evaluar_respuestas(session_id: str = Form(...), respuestas: str = Form
 
 
 # To execute the app if we run it in local
-uvicorn.run(app)
+# uvicorn.run(app)
 # After decomment e should run the app with the following command: python app.py
