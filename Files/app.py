@@ -76,7 +76,7 @@ async def generar_preguntas(tema: str = Form(...)):
 async def evaluar_respuestas(session_id: str = Form(...), respuestas: str = Form(...)):
 
     try:
-        # Restore the questions from the database
+        # Restore the questions from the database from the same session
         db = pymysql.connect(host=host, user=username, password=password, cursorclass=pymysql.cursors.DictCursor)
         cursor = db.cursor()
         
@@ -97,7 +97,7 @@ async def evaluar_respuestas(session_id: str = Form(...), respuestas: str = Form
     # Evaluate the answers with Cohere
 
     try:
-        question= f"Un entrevistador ha realizado la siguiente pregunta: {result}. Ante esa pregunta yo he respondido esto:{respuestas}. Evaluame cómo lo he hecho, diciéndome los errores de manera breve. Gracias"
+        question= f"Un entrevistador ha realizado las siguientes preguntas: {result}. Ante esa pregunta yo he respondido esto:{respuestas}. Evaluame cómo lo he hecho, diciéndome los errores de manera breve como si hubieras sido tú el entrevistador. Empieza directamente respondiéndome, sin comentar antes nada. Respóndeme con un texto de manera estructurada. Acaba la evaluación con una frase motivadora."
         
         # Call the API to evaluate the answers
         response = co.chat(
@@ -134,5 +134,5 @@ async def evaluar_respuestas(session_id: str = Form(...), respuestas: str = Form
 
 
 # To execute the app if we run it in local
-# uvicorn.run(app)
+uvicorn.run(app)
 # After decomment e should run the app with the following command: python app.py

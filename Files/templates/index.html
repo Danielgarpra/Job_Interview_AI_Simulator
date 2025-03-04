@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intervy - Entrevista con IA</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -15,6 +17,7 @@
             align-items: center;
             min-height: 100vh;
         }
+
         header {
             text-align: center;
             color: white;
@@ -30,10 +33,10 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg'); /* Imagen de fondo */
+            background-image: url('https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg');
             background-size: cover;
             background-position: center;
-            filter: brightness(0.6); /* Aplica un efecto de opacidad */
+            filter: brightness(0.6);
             z-index: -1;
         }
         header h1 {
@@ -48,8 +51,8 @@
             font-weight: normal;
             position: relative;
         }
+
         .container {
-            max-width: 600px;
             background: white;
             padding: 30px;
             border-radius: 10px;
@@ -57,17 +60,28 @@
             text-align: center;
             margin: 20px;
         }
+
+        .small-container {
+            max-width: 400px;
+        }
+
+        .large-container {
+            max-width: 600px;
+        }
+
         h1 {
             color: #5D9B9B;
-            font-size: 30px;
+            font-size: 24px;
             margin-bottom: 20px;
         }
+
         textarea {
             width: 100%;
             height: 100px;
             margin-bottom: 20px;
             padding: 10px;
-            font-size: 14px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
             border: 1px solid #ccc;
             border-radius: 5px;
             resize: none;
@@ -77,6 +91,7 @@
             border-color: #5D9B9B;
             outline: none;
         }
+
         button {
             padding: 10px 20px;
             font-size: 16px;
@@ -90,6 +105,7 @@
         button:hover {
             background-color: #4a7c7c;
         }
+
         .box {
             margin-top: 20px;
             padding: 15px;
@@ -111,17 +127,21 @@
         <h2>De la práctica al éxito. Tu entrevista perfecta a un solo click</h2>
     </header>
     
-    <div class="container">
+    <!--First container-->
+    <div class="container small-container">
         <h1>Selecciona un campo para la entrevista</h1>
         <form id="formTema">
             <textarea id="tema" name="tema" placeholder="Ejemplo: Data Science"></textarea>
             <button type="submit">Generar Preguntas</button>
         </form>
         <div id="preguntas" class="box"></div>
+    </div>
 
-        <h1>Responde las preguntas</h1>
+    <!-- Second container -->
+    <div class="container large-container">
+        <h1>Responde a las preguntas para poder ser evaluado</h1>
         <form id="formRespuestas" style="display:none;">
-            <textarea id="respuestas" name="respuestas" placeholder="Tu puedes!"></textarea>
+            <textarea id="respuestas" name="respuestas" placeholder="¡Tú puedes!"></textarea>
             <button type="submit">Evaluar Respuestas</button>
         </form>
         <div id="evaluacion" class="box"></div>
