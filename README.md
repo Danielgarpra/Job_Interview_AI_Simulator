@@ -5,7 +5,7 @@
 ## Description
 Intervy is a web application that helps users practice job interviews using artificial intelligence. Users can select a topic for their interview, receive ten related questions, and submit their answers for evaluation. The AI provides feedback to help users improve their responses and boost their confidence in real interviews.
 
-This project has a Docker image available in the following Docker Hub repository, where you can download the image and run it locally for full usage, as the .env file is not included in this repository and the application cannot be executed without it: dangarpra/entervy_app.If you are very interested in using it, let me know so I can reactivate the database on AWS.
+This project has a Docker image available in the following Docker Hub repository, where you can download the image and run it locally for full usage, as the .env file is not included in this repository and the application cannot be executed without it: dangarpra/entervy_app. If you are very interested in using it, let me know so I can reactivate the database on AWS.
 
 ## Features
 - Choose an interview topic.
@@ -21,7 +21,7 @@ This project has a Docker image available in the following Docker Hub repository
 
 ## Installation and Setup
 1. Clone this repository:
-   git clone https://github.com/your-username/intervy.git  
+   git clone https://github.com/Danielgarpra/intervy.git  
    cd intervy
 
 2. Create a virtual environment :
