@@ -2,7 +2,7 @@
 
 ![alt text](./Files/images/image.png)
 
-![alt video](./Files/images/AI Interviewer.mp4).
+[Descargar video demostración](./Files/images/AI_Interviewer.mp4)
 
 ## Description
 Intervy is a web application that helps users practice job interviews using artificial intelligence. Users can select a topic for their interview, receive ten related questions, and submit their answers for evaluation. The AI provides feedback to help users improve their responses and boost their confidence in real interviews.
